@@ -1,23 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import * as ROUTES from "./constants/routes";
+import CircularProgress from "@mui/material/CircularProgress";
 
 function App() {
+  const loading = (
+    <div className="loading_container">
+      <div className="sk-spinner sk-spinner-pulse loading_spinner">
+        <CircularProgress size={35} />
+      </div>
+    </div>
+  );
+  const HOME = lazy(() => import("./pages/home/index"));
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Router>
+        <Suspense fallback={loading}>
+          <Routes>
+            <Route path={ROUTES.HOME} element={<HOME />} exact={true} />
+          </Routes>
+        </Suspense>
+      </Router>
+
     </div>
   );
 }
